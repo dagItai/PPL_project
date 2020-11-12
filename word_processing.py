@@ -11,22 +11,20 @@ class English:
         self.SYNONYMS_THRESHOLD = 0.7
         self.freqs = nltk.FreqDist(w.lower() for w in brown.words())
 
-    def get_synonyms(self, keyword_list):
+    def add_synonyms(self, keyword_list):
+        synonyms_keyword_list = []
         for keyword in keyword_list:
             for ss in wn.synsets(keyword):
                 for lemma in ss.lemma_names():
-                    if lemma.lower() != keyword.lower():
-                        print(f"lemma {lemma}")
-                        lemma1 = lemma.replace("_"," ")
-                        print(lemma1)
-                        print(self.freqs[lemma1])
-                        key = wn.synsets(keyword)[0]
-                        print(f"kry: {key}")
-                        print(f"ss {ss}")
-                        leema_sys = wn.synsets(lemma)[0]
-                        lch = key.path_similarity(leema_sys)
-                        print(lch)
-                        print("*******")
+                    lemma = lemma.replace("_", " ").lower()
+                    if lemma != keyword.lower():
+                        synonyms_keyword_list.append(lemma)
+                        break
+                else:
+                    continue
+                break
+        return keyword_list + synonyms_keyword_list
+
 
     def stem_from_voice(self, sentence):
         stem_words = []
@@ -47,7 +45,7 @@ class English:
 #     # def __init__(self):
 #
 #
-#     # def get_synonyms(self, keyword_list):
+#     # def add_synonyms(self, keyword_list):
 #     #
 #     #
 #     # def check_stamming_from_voice(self, sentence):
@@ -60,8 +58,8 @@ class English:
 
 user_lan = English()
 sen = "I love to walking to the mall and make my shopper"
-keyword_list = ["AI", "Homeworks", "emails"]
-user_lan.get_synonyms(keyword_list)
+keyword_list = ["AI", "Homeworks", "email"]
+user_lan.add_synonyms(keyword_list)
 # user_lan.stem_from_voice(sen)
 # user_lan.stem_keywrod_list(keyword_list)
 # user_lan.get_all_hyponyms(keyword_list)
