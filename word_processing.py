@@ -1,8 +1,5 @@
-import nltk
 from nltk.corpus import wordnet as wn
-from PyDictionary import PyDictionary
 from nltk.stem.snowball import SnowballStemmer
-from nltk.corpus import brown
 
 class English:
     def __init__(self):
