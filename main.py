@@ -1,3 +1,4 @@
+
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
@@ -8,7 +9,8 @@ from kivy.uix.label import Label
 from kivy.animation import Animation
 from kivy.properties import StringProperty, NumericProperty
 from kivy.clock import Clock
-
+from threading import Thread
+import speechtotext
 import time
 
 
@@ -50,12 +52,30 @@ class SettingsScreen(Screen):
     def start_listen(self):
         # Get the inputs from the GUI
         words_list, sound_type, synonyms, write_to_log = self.fetch_input()
+        # todo - check words list not empty
         self.manager.current = 'listening'
+        self.listen_thread = Thread(target=speechtotext.speechToText, args=(words_list, sound_type, synonyms, write_to_log))
+        self.listen_thread.start()
+
+
+    def stop_listen(self):
+        self.stop = True
+
+    def infinite_loop(self, words_list, sound_type, synonyms, write_to_log):
+        listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
+        listen_thread.start_speech_to_text()
+        iteration = 0
+        while True:
+            if self.stop:
+                # Stop running this thread so the main Python process can exit.
+                return
+            iteration += 1
+            print('Infinite loop, iteration {}.'.format(iteration))
 
 
 class ListeningScreen(Screen):
     def stop_listen(self):
-        self.manager.current = 'settings'
+        manager.current = 'settings'
 
 
 class ScreenManagement(ScreenManager):
@@ -67,8 +87,14 @@ Builder.load_file("main.kv")
 
 class mainApp(App):
     def build(self):
-        return ScreenManagement()
+        screen_management = ScreenManagement()
+        return screen_management
+
+
 
 
 if __name__ == '__main__':
+    # gui_thread = Thread(target=ScreenManagement, daemon=True)
+    # gui_thread.start()
+    # # listen_thread.start()
     mainApp().run()
