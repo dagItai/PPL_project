@@ -1,5 +1,4 @@
 import nltk
-from nltk.corpus import stopwords
 from nltk.corpus import wordnet as wn
 from PyDictionary import PyDictionary
 from nltk.stem.snowball import SnowballStemmer
@@ -8,8 +7,6 @@ from nltk.corpus import brown
 class English:
     def __init__(self):
         self.stemmer = SnowballStemmer("english", ignore_stopwords=True)
-        self.SYNONYMS_THRESHOLD = 0.7
-        self.freqs = nltk.FreqDist(w.lower() for w in brown.words())
 
     def add_synonyms(self, keyword_list):
         synonyms_keyword_list = []
@@ -59,7 +56,8 @@ class English:
 user_lan = English()
 sen = "I love to walking to the mall and make my shopper"
 keyword_list = ["AI", "Homeworks", "email"]
-user_lan.add_synonyms(keyword_list)
+new_list = user_lan.add_synonyms(keyword_list)
+print(new_list)
 # user_lan.stem_from_voice(sen)
 # user_lan.stem_keywrod_list(keyword_list)
 # user_lan.get_all_hyponyms(keyword_list)
