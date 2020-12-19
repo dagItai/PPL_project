@@ -1,0 +1,312 @@
+#:kivy 1.9
+#:import Animation kivy.animation.Animation
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import App kivy.app.App
+#:import Factory kivy.factory.Factory
+
+
+<ScreenManagement>:
+    WelcomeScreen:
+        name: 'welcome'
+    SettingsScreen:
+        name: 'settings'
+    ListeningScreen:
+        name: 'listening'
+
+# Define your background color Template
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+
+
+<TextInputLoca@TextInput>
+    size_hint: 0.8,0.2
+    height: 30
+    width: 150
+    font_name: 'Sofia-Pro-Light-Az'
+    color: (0.51764,0.74117,0.99607,1)
+
+
+<IncrediblyCrudeClock>
+    text: str(round(self.a, 1))
+
+
+<BackgroundLabel@Label+BackgroundColor>
+    background_color: 0, 0, 0, 0
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+
+<CustomDropDown@StrokeButton>
+    id: btn
+    text: '-'
+    on_release: dropdown.open(self)
+    font_name: 'Sofia-Pro-Bold-Az'
+
+    Widget:
+        on_parent: dropdown.dismiss()
+
+    DropDown:
+
+        id: dropdown
+        on_select: btn.text = ' Selected alert: {}'.format(args[1])
+        on_select: dropdown.dismiss()
+        StrokeButtonDropDown:
+            text: 'ping'
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select('ping')
+            on_release: dropdown.dismiss()
+        StrokeButtonDropDown:
+            text: 'success'
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select('success')
+            on_release: dropdown.dismiss()
+        StrokeButtonDropDown:
+            text: 'scream'
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select('scream')
+            on_release: dropdown.dismiss()
+
+<CustButton@Button>:
+    font_size: 35
+    background_color: 0,0,0,0
+    canvas.before:
+        Color:
+            rgba: (.4, .4, .4, 1) if self.state=='normal' else (0,.7,.7,1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20, ]
+
+
+<RawLayout@BoxLayout>:
+    spacing: 8
+    padding: 8
+    size_hint: [1, .2]
+
+<CircularButton@Button>:
+    background_color: 0,0,0,0
+    # Creating Circular button
+    canvas.before:
+        Color:
+            rgb: (0.157, 0.455, 0.753, 1.0) if self.state == 'normal' else (0,0,0,0)
+        RoundedRectangle:
+            size: (self.size)
+            pos: (self.pos)
+            radius: [20, ]
+
+<StrokeButton@Button>:
+    background_color: 0,0,0,0
+    background_normal: ''
+    back_color: (1,1,1, 1)
+    border_radius: 18
+    color: (0.51764,0.74117,0.99607,1)
+    bold: True
+    canvas.before:
+        Color:
+            rgb:  (0.51764,0.74117,0.99607,1) if self.state == 'normal' else (0.04705, 0.05882, 0.298039, 1)
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2 if self.state == 'normal' else 1.5
+
+<StrokeButtonDropDown@Button>:
+    background_color: (0.9529, 0.9725, 1, 1)
+    font_name: 'Sofia-Pro-Light-Az'
+    background_normal: ''
+    back_color: (1,1,1, 1)
+    border_radius: 18
+    color: (0.51764,0.74117,0.99607,1)
+    bold: True
+    canvas.before:
+        Color:
+            rgb:  (0.51764,0.74117,0.99607,1) if self.state == 'normal' else (0.04705, 0.05882, 0.298039, 1)
+        Line:
+            rounded_rectangle: (self.pos[0], self.pos[1], self.size[0], self.size[1], self.border_radius)
+            width: 1.2 if self.state == 'normal' else 1.5
+
+
+<WelcomeScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'welcome.JPG'
+    GridLayout:
+        cols: 1
+        rows: 3
+        padding: [10,10]
+        Label:
+            padding: [0,10]
+            text: 'Welcome to the best \napp in the world'
+            font_size: '70sp'
+            font_name: 'Sofia-Pro-Bold-Az'
+            color: (0.04705, 0.05882, 0.298039, 1)
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: 1.2
+        Label:
+            text: '\n\nThe app that will help you \nto not miss a thing \nmultiple options'
+            font_size: '40sp'
+            font_name: 'sofiapro-light'
+            color: (0.04705, 0.05882, 0.298039, 1)
+            markup: True
+            halign: 'center'
+            valign: 'bottom'
+            size_hint_y: 1.2
+        AnchorLayout:
+            size_hint_y: 2.2
+            anchor_x: 'center'
+            height:100
+            StrokeButton:
+                size_hint: None,None
+                width: 170
+                height: 50
+                padding_y: [40,40]
+                text: 'Start'
+                font_name: 'Sofia-Pro-Bold-Az'
+                font_size: '30sp'
+                on_release: root.manager.current = 'settings'
+
+
+<SettingsScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'welcome.JPG'
+    GridLayout:
+        cols: 1
+        rows: 3
+        padding: [10,10]
+        Label:
+            height:70
+            size_hint_y: None
+            text: "Let's get it started"
+            font_size: '70sp'
+            font_name: 'Sofia-Pro-Bold-Az'
+            color: (0.04705, 0.05882, 0.298039, 1)
+            halign: 'center'
+            valign: 'middle'
+        GridLayout:
+            cols: 2
+            rows: 3
+            BackgroundLabel
+                text: 'Please enter the words you would \nlike to be notified about'
+                background_color: (0.04705, 0.05882, 0.298039, 1)
+                font_size: '25sp'
+                font_name: 'Sofia-Pro-Light-Az'
+                color: (0.04705, 0.05882, 0.298039, 1)
+            AnchorLayout:
+                TextInputLoca:
+                    id: startLoc
+                    hint_text: 'Homework, computer, Adir'
+            BackgroundLabel
+                text: 'Please choose the sound to hear \nonce the words are said'
+                background_color: (0.04705, 0.05882, 0.298039, 1)
+                font_size: '25sp'
+                font_name: 'Sofia-Pro-Light-Az'
+                color: (0.04705, 0.05882, 0.298039, 1)
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                CustomDropDown:
+                    height:40
+                    width: 300
+                    size_hint: None,None
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: .22
+                Label:
+                    text: "Use synonyms"
+                    size_hint_x: .80
+                    font_size:'25sp'
+                    font_name: 'Sofia-Pro-Light-Az'
+                    color: (0.04705, 0.05882, 0.298039, 1)
+                    markup: True
+                    halign: 'center'
+                    valign: 'bottom'
+                CheckBox:
+                    color: (0.51764,0.74117,0.99607,1)
+                    on_active: root.checkbox_click(self, self.active)
+                    size_hint_x: .20
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: .22
+                Label:
+                    text: "Write to log"
+                    size_hint_x: .80
+                    font_size:'25sp'
+                    font_name: 'Sofia-Pro-Light-Az'
+                    color: (0.04705, 0.05882, 0.298039, 1)
+                    markup: True
+                    halign: 'center'
+                    valign: 'bottom'
+                CheckBox:
+                    color: (0.51764,0.74117,0.99607,1)
+                    size_hint_x: .20
+        AnchorLayout:
+            size_hint_y: None
+            anchor_x: 'center'
+            height:100
+            StrokeButton:
+                size_hint: None,None
+                width: 230
+                height: 50
+                padding_y: [40,40]
+                text: 'Start Listen'
+                font_name: 'Sofia-Pro-Bold-Az'
+                font_size: '30sp'
+                on_release: root.manager.current = 'listening'
+
+
+<ListeningScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'welcome.JPG'
+    GridLayout:
+        cols: 1
+        rows: 4
+        padding: [10,10]
+        Label:
+            padding: [0,10]
+            text: '\nWelcome to the best \napp in the world'
+            font_size: '70sp'
+            font_name: 'Sofia-Pro-Bold-Az'
+            color: (0.04705, 0.05882, 0.298039, 1)
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: 1.2
+        Label:
+            text: '\n\n\nWe are looking for those words: \nComputer, AI, Adir'
+            font_size: '40sp'
+            font_name: 'sofiapro-light'
+            color: (0.04705, 0.05882, 0.298039, 1)
+            markup: True
+            halign: 'center'
+            valign: 'bottom'
+            size_hint_y: 1.2
+        ClockText:
+            id: clock_text
+            size_hint: 0.75,1
+            color: (0.04705, 0.05882, 0.298039, 1)
+        AnchorLayout:
+            size_hint_y: 2.2
+            anchor_x: 'center'
+            height:100
+            StrokeButton:
+                size_hint: None,None
+                width: 230
+                height: 50
+                padding_y: [40,40]
+                text: 'Stop Listen'
+                font_name: 'Sofia-Pro-Bold-Az'
+                font_size: '30sp'
+                on_release: root.manager.current = 'settings'
+
