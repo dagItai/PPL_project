@@ -16,10 +16,9 @@ class ClockText(Label):
     def __init__(self, **kwargs):
         super(ClockText, self).__init__(**kwargs)
         Clock.schedule_interval(self.update, 1)
-        self.start_time = time.time()
 
     def update(self, *args):
-        self.text = time.strftime('%I:%M %p')
+        self.text = '\n\n' + time.strftime('%H:%M:%S')
 
 
 Window.clearcolor = .3, .3, .3, 1
@@ -50,6 +49,7 @@ class SettingsScreen(Screen):
     def start_listen(self):
         # Get the inputs from the GUI
         words_list, sound_type, synonyms, write_to_log = self.fetch_input()
+        self.start_time = time.time()
         self.manager.current = 'listening'
 
 
