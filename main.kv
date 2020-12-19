@@ -203,7 +203,7 @@
                 color: (0.04705, 0.05882, 0.298039, 1)
             AnchorLayout:
                 TextInputLoca:
-                    id: startLoc
+                    id: words
                     hint_text: 'Homework, computer, Adir'
             BackgroundLabel
                 text: 'Please choose the sound to hear \nonce the words are said'
@@ -215,6 +215,7 @@
                 anchor_x: 'center'
                 anchor_y: 'center'
                 CustomDropDown:
+                    id: dropdownmain
                     height:40
                     width: 300
                     size_hint: None,None
@@ -231,6 +232,7 @@
                     halign: 'center'
                     valign: 'bottom'
                 CheckBox:
+                    id: synonyms
                     color: (0.51764,0.74117,0.99607,1)
                     on_active: root.checkbox_click(self, self.active)
                     size_hint_x: .20
@@ -247,6 +249,7 @@
                     halign: 'center'
                     valign: 'bottom'
                 CheckBox:
+                    id: log
                     color: (0.51764,0.74117,0.99607,1)
                     size_hint_x: .20
         AnchorLayout:
@@ -261,7 +264,7 @@
                 text: 'Start Listen'
                 font_name: 'Sofia-Pro-Bold-Az'
                 font_size: '30sp'
-                on_release: root.manager.current = 'listening'
+                on_release: root.start_listen()
 
 
 <ListeningScreen>:
@@ -308,5 +311,5 @@
                 text: 'Stop Listen'
                 font_name: 'Sofia-Pro-Bold-Az'
                 font_size: '30sp'
-                on_release: root.manager.current = 'settings'
+                on_release: root.stop_listen()
 

@@ -30,11 +30,32 @@ class WelcomeScreen(Screen):
 
 
 class SettingsScreen(Screen):
-    pass
+    def fetch_input(self):
+        # words input
+        words_list = self.ids.words.text.split(",")
+        words_list = list(map(str.strip, words_list))
+        # sound type
+        sound_type = self.ids.dropdownmain.text.split(":")
+        if len(sound_type) > 1:
+            sound_type = sound_type[1].strip()
+        else:
+            sound_type = 'success'
+        # synonyms
+        synonyms = self.ids.synonyms.active
+        # write to log
+        write_to_log = self.ids.log.active
+        return words_list, sound_type, synonyms, write_to_log
+
+    # Responsible for the listen
+    def start_listen(self):
+        # Get the inputs from the GUI
+        words_list, sound_type, synonyms, write_to_log = self.fetch_input()
+        self.manager.current = 'listening'
 
 
 class ListeningScreen(Screen):
-    pass
+    def stop_listen(self):
+        self.manager.current = 'settings'
 
 
 class ScreenManagement(ScreenManager):
