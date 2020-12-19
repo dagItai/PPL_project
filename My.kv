@@ -1,0 +1,113 @@
+#:kivy 1.9
+#:import Animation kivy.animation.Animation
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import App kivy.app.App
+#:import Factory kivy.factory.Factory
+
+
+# Define your background color Template
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+
+<CircularButton@Button>:
+    background_color: 0,0,0,0
+    # Creating Circular button
+    canvas.before:
+        Color:
+            rgb: (0.157, 0.455, 0.753, 1.0) if self.state == 'normal' else (0,0,0,0)
+        RoundedRectangle:
+            size: (self.size)
+            pos: (self.pos)
+            radius: [20, ]
+
+
+<BackgroundLabel@Label+BackgroundColor>
+    background_color: 0, 0, 0, 0
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+
+
+<TextInputLoca@TextInput>
+    size_hint: 0.8,0.2
+    height: 30
+    width: 150
+
+<MainScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'ny2.jpg'
+    cols: 1
+    rows: 3
+    padding: [10,10]
+    Label:
+        height:70
+        size_hint_y: None
+        text: 'You ride! We guide'
+        font_size: '90sp'
+        font_name: 'Amatic-Bold'
+        outline_color: (0, 0, 0, 1)
+        outline_width: 1
+    GridLayout:
+        cols: 2
+        rows: 3
+        BackgroundLabel
+            text: 'What is your current location?'
+            background_color: 1, 1, 1, 1
+            font_size: '25sp'
+            font_name: 'Prototype'
+            markup: True
+            color: (0.839, 0.96, 0.678, 1)
+            outline_color: (0, 0, 0, 1)
+            outline_width: 1
+        AnchorLayout:
+            TextInputLoca:
+                id: startLoc
+                hint_text: 'Oakland Ave'
+        BackgroundLabel
+            text: 'How much time would you like to spend?'
+            background_color: 1, 1, 1, 1
+            font_size: '25sp'
+            font_name: 'Prototype'
+            markup: True
+            color: (0.839, 0.96, 0.678, 1)
+            outline_color: (0, 0, 0, 1)
+            outline_width: 1
+        AnchorLayout:
+            TextInputLoca:
+                id: tripDur
+                hint_text: '15'
+        BackgroundLabel
+            text: 'How many location recommendations would you like to receive?'
+            background_color: 1, 1, 1, 1
+            font_size: '25sp'
+            font_name: 'Prototype'
+            markup: True
+            color: (0.839, 0.96, 0.678, 1)
+            outline_color: (0, 0, 0, 1)
+            outline_width: 1
+        AnchorLayout:
+            TextInputLoca:
+                id: recNo
+                hint_text: '5'
+    AnchorLayout:
+        size_hint_y: None
+        anchor_x: 'center'
+        height:100
+        CircularButton:
+            size_hint: None,None
+            width: 170
+            height: 50
+            padding_y: [0,10]
+            text: 'Recommend me'
+            font_name: 'Amatic-Bold'
+            font_size: '30sp'
+            outline_color: (0, 0, 0, 1)
+            outline_width: 1
+            on_release:
+                root.recommend_me()
