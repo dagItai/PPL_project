@@ -1,0 +1,8 @@
+Time: 2020-12-19 22:39:23.357477, Sentence:  today I'm going to go to school'
+'Time: 2020-12-19 22:39:30.485961, Sentence:  I think last year'
+'Time: 2020-12-19 22:42:49.663167, Sentence:  I'm going to school'
+'Time: 2020-12-19 22:43:00.795011, Sentence:  last year I've been'
+'Time: 2020-12-19 22:43:27.899012, Sentence: hello my friend School'
+'Time: 2020-12-19 22:43:41.158702, Sentence:  last year'
+'Time: 2020-12-19 22:44:59.567220, Sentence: School'
+'

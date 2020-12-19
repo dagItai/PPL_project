@@ -1,3 +1,4 @@
+import threading
 
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
@@ -12,6 +13,28 @@ from kivy.clock import Clock
 from threading import Thread
 import speechtotext
 import time
+
+
+class MyThread(Thread):
+    def __init__(self, *args, **kwargs):
+        super(MyThread, self).__init__(*args, **kwargs)
+        self._stop = threading.Event()
+
+        # function using _stop function
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
+
+    def run(self):
+        while True:
+            if self.stopped():
+                return
+            print("Hello, world!")
+            time.sleep(1)
+
 
 
 class ClockText(Label):
@@ -54,28 +77,29 @@ class SettingsScreen(Screen):
         words_list, sound_type, synonyms, write_to_log = self.fetch_input()
         # todo - check words list not empty
         self.manager.current = 'listening'
-        self.listen_thread = Thread(target=speechtotext.speechToText, args=(words_list, sound_type, synonyms, write_to_log))
-        self.listen_thread.start()
+        self.manager.listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
+        self.manager.listen_thread.start()
 
 
-    def stop_listen(self):
-        self.stop = True
+    # def stop_listen(self):
+    #     self.stop = True
 
-    def infinite_loop(self, words_list, sound_type, synonyms, write_to_log):
-        listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
-        listen_thread.start_speech_to_text()
-        iteration = 0
-        while True:
-            if self.stop:
-                # Stop running this thread so the main Python process can exit.
-                return
-            iteration += 1
-            print('Infinite loop, iteration {}.'.format(iteration))
+    # def infinite_loop(self, words_list, sound_type, synonyms, write_to_log):
+    #     listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
+    #     listen_thread.start_speech_to_text()
+    #     iteration = 0
+    #     while True:
+    #         if self.stop:
+    #             # Stop running this thread so the main Python process can exit.
+    #             return
+    #         iteration += 1
+    #         print('Infinite loop, iteration {}.'.format(iteration))
 
 
 class ListeningScreen(Screen):
     def stop_listen(self):
-        manager.current = 'settings'
+        self.manager.listen_thread.stop()
+        self.manager.current = 'settings'
 
 
 class ScreenManagement(ScreenManager):

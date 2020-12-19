@@ -53,12 +53,12 @@ class English:
 
 
 
-user_lan = English()
-sen = "I love to walking to the mall and make my shopper"
-keyword_list = ["AI", "Homeworks", "email"]
-new_list = user_lan.add_synonyms(keyword_list)
-print(new_list)
-# user_lan.stem_from_voice(sen)
+# user_lan = English()
+# sen = "I love to walking to the mall and make my shopper"
+# keyword_list = ["AI", "Homeworks", "email"]
+# new_list = user_lan.add_synonyms(keyword_list)
+# print(new_list)
+# # user_lan.stem_from_voice(sen)
 # user_lan.stem_keywrod_list(keyword_list)
 # user_lan.get_all_hyponyms(keyword_list)
 # user_lan.diff_method(keyword_list)
