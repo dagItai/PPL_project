@@ -2,19 +2,23 @@ import os
 import datetime
 import beepy
 
-# import winsound
-# frequency = 2500  # Set Frequency To 2500 Hertz
-# duration = 1000  # Set Duration To 1000 ms == 1 second
-# winsound.Beep(frequency, duration)
-import time
-import sys
-
 full_date = datetime.datetime.now()
 
 def play_beep(beep_name):
+    '''
+    Plays notification sounds with the sound that the user choose
+    Args:
+        beep_name: beep sound
+    '''
     beepy.beep(sound=beep_name)
 
 def write_to_log(sentence):
+    '''
+    Respone to write to log the sentence in which one of the user's word was identified
+    Args:
+        sentence: the sentence that need to be written in the log
+
+    '''
     filename = f"{full_date.strftime('%d%m%y')}_{full_date.strftime('%H%M%S')}_zoom_sentence.txt"
 
     if os.path.exists(filename):

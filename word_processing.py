@@ -1,14 +1,24 @@
-import nltk
 from nltk.corpus import wordnet as wn
-from PyDictionary import PyDictionary
 from nltk.stem.snowball import SnowballStemmer
-from nltk.corpus import brown
 
 class English:
+    '''
+    Word processor for the English language
+    '''
     def __init__(self):
+        '''
+        set the stemmer
+        '''
         self.stemmer = SnowballStemmer("english", ignore_stopwords=True)
 
     def add_synonyms(self, keyword_list):
+        '''
+        Find one synonym for each word that has been goven by the user
+        Args:
+            keyword_list: keyword that have been given by the user
+        Returns:
+            the original words with the synonyms
+        '''
         synonyms_keyword_list = []
         for keyword in keyword_list:
             for ss in wn.synsets(keyword):
@@ -24,6 +34,13 @@ class English:
 
 
     def stem_from_voice(self, sentence):
+        '''
+        Responsible for turning a sentence obtained from a transcript into a sentence which is consist only stemming words
+        Args:
+            sentence: a sentence obtained from a transcript
+
+        Returns: Sentence which is consist only stemming words
+        '''
         stem_words = []
         for word in sentence.split():
             stem_words.append(self.stemmer.stem(word))
@@ -31,34 +48,16 @@ class English:
         return new_sentence
 
     def stem_keywrod_list(self, keyword_list):
+        '''
+        Responsible for adding to the keyword_list the stem words
+        Args:
+            keyword_list: the keyword that have been given by the user
+        Returns: list with the original keyword and the stem words
+        '''
         stem_words = []
         for word in keyword_list:
-            stem_words.append(self.stemmer.stem(word))
-        return stem_words
+            stem_word = self.stemmer.stem(word)
+            if stem_word != word.lower():
+                stem_words.append(stem_word)
+        return keyword_list + stem_words
 
-
-
-# class Hebrew:
-#     # def __init__(self):
-#
-#
-#     # def add_synonyms(self, keyword_list):
-#     #
-#     #
-#     # def check_stamming_from_voice(self, sentence):
-#
-#     def stem_keywrod_list(self, keyword_list):
-
-
-
-
-
-# user_lan = English()
-# sen = "I love to walking to the mall and make my shopper"
-# keyword_list = ["AI", "Homeworks", "email"]
-# new_list = user_lan.add_synonyms(keyword_list)
-# print(new_list)
-# # user_lan.stem_from_voice(sen)
-# user_lan.stem_keywrod_list(keyword_list)
-# user_lan.get_all_hyponyms(keyword_list)
-# user_lan.diff_method(keyword_list)
