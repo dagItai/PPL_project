@@ -14,27 +14,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 import speechtotext
 
-
-class MyThread(Thread):
-    def __init__(self, *args, **kwargs):
-        super(MyThread, self).__init__(*args, **kwargs)
-        self._stop = threading.Event()
-
-        # function using _stop function
-
-    def stop(self):
-        self._stop.set()
-
-    def stopped(self):
-        return self._stop.isSet()
-
-    def run(self):
-        while True:
-            if self.stopped():
-                return
-            print("Hello, world!")
-            time.sleep(1)
-
+Window.clearcolor = .3, .3, .3, 1
 
 def show_warning_popup(text):
     '''
@@ -56,38 +36,43 @@ def show_warning_popup(text):
     closeButton.bind(on_press=popup.dismiss)
 
 def check_words_list(wordslist):
+    '''
+    Check that the wordslist is not empty and that all the words entered consist only alphabet letters
+    Args:
+        wordslist: List of words taken from the GUI when separated by a comma
+    Returns: True if the list not empty and all the words are alphabet, False otherwise and raise an warning pop up
+    '''
     if len(wordslist) == 0:
         show_warning_popup("Words list can't be empty")
         return False
     for word in wordslist:
         if not word.isalpha():
-            show_warning_popup("Words must contain only alphabets")
+            show_warning_popup("Words must contain only alphabets\nMake sure you separate the\nwords by comma")
             return False
     return True
 
-
-class ClockText(Label):
-    def __init__(self, **kwargs):
-        super(ClockText, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-        self.start_time = time.time()
-
-    def update(self, *args):
-        self.text = '\n' + time.strftime('%I:%M %p')
-
-
-Window.clearcolor = .3, .3, .3, 1
-
-
 class WelcomeScreen(Screen):
+    '''
+    First svreen in app
+    '''
     pass
 
-
 class SettingsScreen(Screen):
+    '''
+    The second window in the app, where the user set all the parameters
+    '''
     def fetch_input(self):
+        '''
+        Responsible for get the parameter that the user have been set in the GU
+        Returns:
+            4 parameter that the user set: words_list, sound_type, synonyms, write_to_log
+        '''
         # words input
-        words_list = self.ids.words.text.split(",")
-        words_list = list(map(str.strip, words_list))
+        if self.ids.words.text:
+            words_list = self.ids.words.text.split(",")
+            words_list = [i.strip() for i in words_list]
+        else:
+            words_list = list()
         # sound type
         sound_type = self.ids.dropdownmain.text.split(":")
         if len(sound_type) > 1:
@@ -102,54 +87,54 @@ class SettingsScreen(Screen):
 
     # Responsible for the listen
     def start_listen(self):
+        '''
+        The main function which run the all process after clicking on the "start listen" button
+        '''
         # Get the inputs from the GUI
         words_list, sound_type, synonyms, write_to_log = self.fetch_input()
+        # Check that the input is valid
         if not check_words_list(words_list):
             return
-        # todo - check words list not empty
         self.manager.current = 'listening'
         self.manager.children[0].ids.words_search.text = ", ".join(words_list)
+        # Start the listen thread that do speech-to-text
         self.manager.listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
         self.manager.listen_thread.daemon = True
         self.manager.listen_thread.start()
 
-
-    # def stop_listen(self):
-    #     self.stop = True
-
-    # def infinite_loop(self, words_list, sound_type, synonyms, write_to_log):
-    #     listen_thread = speechtotext.speechToText(words_list, sound_type, synonyms, write_to_log)
-    #     listen_thread.start_speech_to_text()
-    #     iteration = 0
-    #     while True:
-    #         if self.stop:
-    #             # Stop running this thread so the main Python process can exit.
-    #             return
-    #         iteration += 1
-    #         print('Infinite loop, iteration {}.'.format(iteration))
-
-
 class ListeningScreen(Screen):
+    '''
+    The third screen in the app, when the speech to text process takes place
+    '''
     def stop_listen(self):
+        '''
+        Stopping the listen_thread after the user clicking "stop listen"
+        '''
         self.manager.listen_thread.stop()
         self.manager.current = 'settings'
 
+class ClockText(Label):
+    '''
+    Clock that appears in the third window
+    '''
+    def __init__(self, **kwargs):
+        super(ClockText, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+        self.start_time = time.time()
+
+    def update(self, *args):
+        self.text = '\n' + time.strftime('%I:%M %p')
 
 class ScreenManagement(ScreenManager):
     pass
-
-
-Builder.load_file("main.kv")
-
 
 class mainApp(App):
     def build(self):
         screen_management = ScreenManagement()
         return screen_management
 
+Builder.load_file("main.kv")
+
 
 if __name__ == '__main__':
-    # gui_thread = Thread(target=ScreenManagement, daemon=True)
-    # gui_thread.start()
-    # # listen_thread.start()
     mainApp().run()

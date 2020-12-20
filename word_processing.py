@@ -52,12 +52,12 @@ class English:
         Responsible for adding to the keyword_list the stem words
         Args:
             keyword_list: the keyword that have been given by the user
-        Returns: list with the original keyword and the stem words
+        Returns: list with the stem words
         '''
         stem_words = []
         for word in keyword_list:
             stem_word = self.stemmer.stem(word)
             if stem_word != word.lower():
                 stem_words.append(stem_word)
-        return keyword_list + stem_words
+        return stem_words
 

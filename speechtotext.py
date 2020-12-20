@@ -4,7 +4,6 @@ import re
 import sys
 from threading import Thread
 import threading
-import beepy
 from google.cloud import speech
 from microphone_stream import MicrophoneStream
 from word_processing import English
@@ -71,15 +70,15 @@ class speechToText(Thread):
         self.word_processor = English()
         # Sound parameter
         self.beep_name = sound_type
+        # Use the word_processor to find a stem word fot the words in words_list
+        stem_words_list = self.word_processor.stem_keywrod_list(words_list)
         # Use the word_processor if synonyms true to find synonyms for all the words in words_list
-        words_list = self.word_processor.stem_keywrod_list(words_list)
         if synonyms:
-            self.explicit_words = "|".join(self.word_processor.add_synonyms(words_list))
-        else:
-            self.explicit_words ="|".join(words_list)
+            words_list = self.word_processor.add_synonyms(words_list)
         # Create regex from all the words
+        words_list = [word.lower() for word in words_list]
+        self.explicit_words = "|".join(set(words_list+stem_words_list))
         self.explicit_words = r'\b({})\b'.format(self.explicit_words)
-        print(self.explicit_words)
         # Set write to log
         self.write_to_log = write_to_log
 
@@ -110,7 +109,6 @@ class speechToText(Thread):
         for response in responses:
             # check that _stop flag raised
             if self.stopped():
-                print("return stop")
                 return
             if not response.results:
                 continue
@@ -159,11 +157,9 @@ class speechToText(Thread):
             audio_generator = stream.generator()
             requests = (speech.StreamingRecognizeRequest(audio_content=content)
                         for content in audio_generator)
-            print("Start talking....")
 
             # streaming_recognize returns a generator
             responses = self.client.streaming_recognize(self.streaming_config, requests)
-
 
             # create transcription from the responses
             self.listen_loop(responses)
