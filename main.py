@@ -46,7 +46,7 @@ def check_words_list(wordslist):
         show_warning_popup("Words list can't be empty")
         return False
     for word in wordslist:
-        if not word.isalpha():
+        if not all(x.isalpha() or x.isspace() for x in word):
             show_warning_popup("Words must contain only alphabets\nMake sure you separate the\nwords by comma")
             return False
     return True

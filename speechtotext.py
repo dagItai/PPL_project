@@ -77,6 +77,7 @@ class speechToText(Thread):
             words_list = self.word_processor.add_synonyms(words_list)
         # Create regex from all the words
         words_list = [word.lower() for word in words_list]
+        print(f"sten {stem_words_list}, plus sy {words_list}")
         self.explicit_words = "|".join(set(words_list+stem_words_list))
         self.explicit_words = r'\b({})\b'.format(self.explicit_words)
         # Set write to log
