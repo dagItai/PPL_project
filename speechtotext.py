@@ -77,10 +77,11 @@ class speechToText(Thread):
             words_list = self.word_processor.add_synonyms(words_list)
         # Create regex from all the words
         words_list = [word.lower() for word in words_list]
-        print(f"sten {stem_words_list}, plus sy {words_list}")
         self.explicit_words = "|".join(set(words_list+stem_words_list))
         self.explicit_words = r'\b({})\b'.format(self.explicit_words)
         # Set write to log
+        if write_to_log:
+            self.Log = Utils.Log()
         self.write_to_log = write_to_log
 
     def set_speech(self):
@@ -136,17 +137,15 @@ class speechToText(Thread):
                 num_chars_printed = len(transcript)
 
             else:
-                print(transcript + overwrite_chars)
-                transcript = self.word_processor.stem_from_voice(transcript)
-                print(transcript)
+                stem_transcript = self.word_processor.stem_from_voice(transcript)
                 # Exit recognition if any of the transcribed phrases could be
                 # one of keywords that have been given by the user.
-                if re.search(self.explicit_words, transcript, re.I):
+                if re.search(self.explicit_words, transcript, re.I) or re.search(self.explicit_words, stem_transcript, re.I):
                     # Beep
                     Utils.play_beep(self.beep_name)
                     # Write to log if the user wanted
                     if self.write_to_log:
-                        Utils.write_to_log(transcript)
+                        self.Log.write_to_log(transcript)
                 num_chars_printed = 0
 
     def start_speech_to_text(self):
