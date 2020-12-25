@@ -1,4 +1,7 @@
+import threading
 import time
+from threading import Thread
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -43,7 +46,7 @@ def check_words_list(wordslist):
         show_warning_popup("Words list can't be empty")
         return False
     for word in wordslist:
-        if not all(x.isalnum() or x.isspace() for x in word):
+        if not all(x.isalpha() or x.isspace() for x in word):
             show_warning_popup("Words must contain only alphabets\nMake sure you separate the\nwords by comma")
             return False
     return True
