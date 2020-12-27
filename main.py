@@ -13,7 +13,6 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 import speechtotext
-
 Window.clearcolor = .3, .3, .3, 1
 
 def show_warning_popup(text):
@@ -46,7 +45,7 @@ def check_words_list(wordslist):
         show_warning_popup("Words list can't be empty")
         return False
     for word in wordslist:
-        if not all(x.isalpha() or x.isspace() for x in word):
+        if not all(x.isalnum() or x.isspace() for x in word):
             show_warning_popup("Words must contain only alphabets\nMake sure you separate the\nwords by comma")
             return False
     return True
