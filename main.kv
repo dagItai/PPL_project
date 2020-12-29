@@ -140,18 +140,12 @@
         cols: 1
         rows: 3
         padding: [10,10]
+        Image:
+            source: 'crop_logo.JPG'
+            size: self.texture_size
         Label:
-            padding: [0,10]
-            text: 'Welcome to the best \napp in the world'
-            font_size: '70sp'
-            font_name: 'Sofia-Pro-Bold-Az'
-            color: (0.04705, 0.05882, 0.298039, 1)
-            halign: 'center'
-            valign: 'middle'
-            size_hint_y: 1.2
-        Label:
-            text: '\n\nThe app that will help you \nto not miss a thing \nmultiple options'
-            font_size: '40sp'
+            text: "\n\n\nUtilize your time and be notified \n\nfor the moments you're interested in \n\nwithin one click away"
+            font_size: '30sp'
             font_name: 'sofiapro-light'
             color: (0.04705, 0.05882, 0.298039, 1)
             markup: True
@@ -186,7 +180,7 @@
         Label:
             height:70
             size_hint_y: None
-            text: "Let's get it started"
+            text: "Let's get started"
             font_size: '70sp'
             font_name: 'Sofia-Pro-Bold-Az'
             color: (0.04705, 0.05882, 0.298039, 1)
@@ -276,18 +270,12 @@
         cols: 1
         rows: 5
         padding: [10,10]
-        Label:
-            padding: [0,10]
-            text: '\nWelcome to the best \napp in the world'
-            font_size: '70sp'
-            font_name: 'Sofia-Pro-Bold-Az'
-            color: (0.04705, 0.05882, 0.298039, 1)
-            halign: 'center'
-            valign: 'middle'
-            size_hint_y: 1.2
+        Image:
+            source: 'crop_logo.JPG'
+            size: self.texture_size
         Label:
             text: '\n\n\nWe are looking for those words: \n'
-            font_size: '40sp'
+            font_size: '35sp'
             font_name: 'sofiapro-light'
             color: (0.04705, 0.05882, 0.298039, 1)
             markup: True
@@ -297,7 +285,7 @@
         Label:
             id: words_search
             font_size: '40sp'
-            font_name: 'sofiapro-light'
+            font_name: 'Sofia-Pro-Bold-Az'
             color: (0.04705, 0.05882, 0.298039, 1)
             markup: True
             halign: 'center'
@@ -307,7 +295,7 @@
             id: clock_text
             size_hint: 0.75,1
             color: (0.04705, 0.05882, 0.298039, 1)
-            font_size: '40sp'
+            font_size: '30sp'
             font_name: 'sofiapro-light'
         AnchorLayout:
             size_hint_y: 2.2

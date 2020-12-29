@@ -11,8 +11,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
-
+from kivy.config import Config
 import speechtotext
+
+Config.set('kivy','window_icon','bell.ico')
+
 Window.clearcolor = .3, .3, .3, 1
 
 def show_warning_popup(text):
@@ -129,6 +132,8 @@ class ScreenManagement(ScreenManager):
 
 class mainApp(App):
     def build(self):
+        self.title = 'SideListener'
+        self.icon = 'bell.png'
         screen_management = ScreenManagement()
         return screen_management
 
