@@ -14,7 +14,7 @@ import os
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="speechRecognition-76fe4cfdf56d.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="speechRecognition-6da9019e841f.json"
 
 class speechToText(Thread):
     '''
